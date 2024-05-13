@@ -1,0 +1,25 @@
+.filter-check {
+  border: 0.2rem dashed #c0c0c040;
+  margin-bottom: 0.5rem;
+  border-radius: 1rem;
+  -webkit-border-radius: 1rem;
+  -moz-border-radius: 1rem;
+  -ms-border-radius: 1rem;
+  -o-border-radius: 1rem;
+
+  & > label {
+    padding: 1rem;
+    font-size: 1.2rem;
+    text-transform: capitalize;
+    input {
+      margin-right: 0.5rem;
+    }
+
+    & + .field_form {
+      margin-top: -0.7rem;
+    }
+    & + .field_input_radio {
+      margin-top: -0.25rem;
+    }
+  }
+}
