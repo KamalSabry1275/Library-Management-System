@@ -39,32 +39,44 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-## Learn More
+# Library Management System
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Welcome to the Library Management System! This system is designed to provide administrators and librarians with powerful tools to efficiently manage library operations. Whether you're overseeing user accounts, organizing library resources, or handling transactions, this system has you covered.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Features
 
-### Code Splitting
+### For Administrators
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+#### User Management
 
-### Analyzing the Bundle Size
+CRUD Operations: Easily add, delete, and edit user accounts as needed.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Role Assignment: Assign roles to users, such as patron, administrator, or librarian, to control access and responsibilities.
 
-### Making a Progressive Web App
+User Status Control: Activate or deactivate user accounts to manage access to the system.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Librarian Listing: Quickly retrieve a list of librarians based on the library name.
 
-### Advanced Configuration
+#### User Filtering
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Efficient Filtering: Filter users based on various criteria such as ID, name, or account type to streamline administrative tasks.
 
-### Deployment
+### For Librarians
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+#### Genre Management
 
-### `npm run build` fails to minify
+Genre Control: Manage genres by adding, deleting, or editing them to maintain a well-organized library catalog.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+#### Book Management
+
+Book Administration: Perform CRUD operations on books to keep the library catalog up to date.
+
+Advanced Filtering: Filter books by ID, title, author, and more to find specific titles quickly.
+
+#### Transaction Handling
+
+Book Borrowing: Review and approve or reject book borrowing requests efficiently.
+
+Reservation Management: Confirm or decline book reservation requests based on availability.
+
+Book Returns: Manage the return process to ensure borrowed books are returned to the library inventory promptly.
