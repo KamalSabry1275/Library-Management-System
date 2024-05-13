@@ -49,34 +49,34 @@ Welcome to the Library Management System! This system is designed to provide adm
 
 #### User Management
 
-CRUD Operations: Easily add, delete, and edit user accounts as needed.
+- CRUD Operations: Easily add, delete, and edit user accounts as needed.
 
-Role Assignment: Assign roles to users, such as patron, administrator, or librarian, to control access and responsibilities.
+- Role Assignment: Assign roles to users, such as patron, administrator, o- r librarian, to control access and responsibilities.
 
-User Status Control: Activate or deactivate user accounts to manage access to the system.
+- User Status Control: Activate or deactivate user accounts to manage access to the system.
 
-Librarian Listing: Quickly retrieve a list of librarians based on the library name.
+- Librarian Listing: Quickly retrieve a list of librarians based on the library name.
 
 #### User Filtering
 
-Efficient Filtering: Filter users based on various criteria such as ID, name, or account type to streamline administrative tasks.
+- Efficient Filtering: Filter users based on various criteria such as ID, name, or account type to streamline administrative tasks.
 
 ### For Librarians
 
 #### Genre Management
 
-Genre Control: Manage genres by adding, deleting, or editing them to maintain a well-organized library catalog.
+- Genre Control: Manage genres by adding, deleting, or editing them to maintain a well-organized library catalog.
 
 #### Book Management
 
-Book Administration: Perform CRUD operations on books to keep the library catalog up to date.
+- Book Administration: Perform CRUD operations on books to keep the library catalog up to date.
 
-Advanced Filtering: Filter books by ID, title, author, and more to find specific titles quickly.
+- Advanced Filtering: Filter books by ID, title, author, and more to find specific titles quickly.
 
 #### Transaction Handling
 
-Book Borrowing: Review and approve or reject book borrowing requests efficiently.
+- Book Borrowing: Review and approve or reject book borrowing requests efficiently.
 
-Reservation Management: Confirm or decline book reservation requests based on availability.
+- Reservation Management: Confirm or decline book reservation requests based on availability.
 
-Book Returns: Manage the return process to ensure borrowed books are returned to the library inventory promptly.
+- Book Returns: Manage the return process to ensure borrowed books are returned to the library inventory promptly.
