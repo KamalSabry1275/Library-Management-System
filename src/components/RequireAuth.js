@@ -34,9 +34,6 @@ export const RequireAuth = ({ allowedRoles, children }) => {
   const location = useLocation();
 
   useEffect(() => {
-    // dispatch(fetchProjects());
-    // dispatch(fetchModules());
-
     const checkAccessToken = async () => {
       const token = getAccessToken();
       const refreshToken = getRefreshToken();
@@ -49,11 +46,11 @@ export const RequireAuth = ({ allowedRoles, children }) => {
           const decodedRefreshToken = jwtDecode(token);
           const expirationTimeRefreshToken = decodedRefreshToken.exp * 1000;
 
-          console.log(expirationTime);
-          console.log(Date.now());
+          console.log(expirationTime, "expirationTime");
+          console.log(Date.now(), "time");
 
           if (expirationTimeRefreshToken < Date.now()) {
-            navigate(routes.Login);
+            // navigate(routes.Login);
           } else if (expirationTime < Date.now()) {
             const res = await fetch(apis.RefreshToken, {
               method: "POST",
@@ -92,6 +89,10 @@ export const RequireAuth = ({ allowedRoles, children }) => {
 
   const token = getAccessToken();
   const role = getRoleUser();
+
+  console.log(allowedRoles);
+  console.log(role);
+  console.log(role == allowedRoles);
 
   return token ? (
     role == allowedRoles ? (

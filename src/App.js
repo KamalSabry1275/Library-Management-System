@@ -97,6 +97,7 @@ function App() {
                   path={routes.Librarian.Transaction["/"]}
                   element={<Transaction />}
                 >
+                  <Route index element={<BorrowBooks />} />
                   <Route
                     path={routes.Librarian.Transaction.Borrow}
                     element={<BorrowBooks />}

@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { InputSelect } from "../../../components/InputSelect";
 import { TableTemp } from "../../../components/TableTemp";
+import { useState } from "react";
 
 export const BorrowBooks = () => {
   // const books = useSelector((state) => state.books?.data);
@@ -51,10 +52,13 @@ export const BorrowBooks = () => {
     },
   ];
 
+  const [state, setState] = useState("");
+
   const dispatch = useDispatch();
 
   const handlerOnChange = (e) => {
     let value = e.target.value;
+    setState(value);
     if (value !== "") {
       console.log(value);
       // dispatch();
@@ -65,7 +69,7 @@ export const BorrowBooks = () => {
     <>
       <InputSelect
         elements={[
-          { value: "", label: "----" },
+          { value: "", label: "Select The State" },
           { value: "Borrow_request", label: "Borrow Request" },
           { value: "Borrowed", label: "Borrowed" },
         ]}
@@ -77,23 +81,32 @@ export const BorrowBooks = () => {
             <th scope="col">#</th>
             <th scope="col">book title</th>
             <th scope="col">username</th>
-            <th scope="col">#</th>
-            <th scope="col">#</th>
+            <th scope="col">operations</th>
           </tr>
         </thead>
-        <tbody className="table-group-divider">
-          {books?.map((book, index) => {
-            return (
-              <>
-                <tr>
+        {state != "" && (
+          <tbody className="table-group-divider">
+            {books?.map((book, index) => {
+              return (
+                <tr key={`${book}-${index}`}>
                   <th scope="row">{index + 1}</th>
-                  <td key={index}>{book.books.title}</td>
-                  <td key={index}>{book.users.username}</td>
+                  <td>{book.books.title}</td>
+                  <td>{book.users.username}</td>
+                  <td>
+                    {state == "Borrow_request" && (
+                      <button className="btn btn-success m-1" type="button">
+                        Confirm
+                      </button>
+                    )}
+                    <button className="btn btn-danger m-1" type="button">
+                      Delete
+                    </button>
+                  </td>
                 </tr>
-              </>
-            );
-          })}
-        </tbody>
+              );
+            })}
+          </tbody>
+        )}
       </table>
     </>
   );

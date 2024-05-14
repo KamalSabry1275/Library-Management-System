@@ -1,10 +1,15 @@
-export const InputSelect = ({ elements = [], onChange }) => {
+export const InputSelect = ({
+  elements = [],
+  onChange = () => {
+    console.log("empty");
+  },
+}) => {
   return (
-    <div>
+    <div className="field_form">
       <select className="field_input text_color" onChange={(e) => onChange(e)}>
         {elements?.map((element, index) => {
           return (
-            <option key={index} value={element.value}>
+            <option key={`${element}-${index}`} value={element.value}>
               {element.label}
             </option>
           );

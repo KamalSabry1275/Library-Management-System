@@ -1,0 +1,46 @@
+[theme="true"] {
+  .mini-nav {
+    input[type="radio"] + label {
+      border: 1px solid #ccc;
+      background-color: rgb(229, 229, 229);
+      color: rgb(42, 42, 42);
+    }
+
+    input[type="radio"]:checked + label {
+      background-color: rgb(176, 176, 176);
+      color: rgb(255, 255, 255);
+    }
+  }
+}
+
+.mini-nav {
+  ul {
+    display: flex;
+    margin: 0.5rem;
+    padding: 0;
+    gap: 0.5rem;
+    li {
+      list-style-type: none;
+    }
+  }
+
+  label {
+    text-transform: capitalize;
+  }
+
+  input[type="radio"] + label {
+    padding: 0.5rem 1rem;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    color: wheat;
+    border-radius: 1rem;
+    -webkit-border-radius: 1rem;
+    -moz-border-radius: 1rem;
+    -ms-border-radius: 1rem;
+    -o-border-radius: 1rem;
+  }
+
+  input[type="radio"]:checked + label {
+    background-color: rgb(73, 73, 73);
+  }
+}
