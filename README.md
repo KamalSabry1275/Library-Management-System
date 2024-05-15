@@ -80,3 +80,5 @@ Welcome to the Library Management System! This system is designed to provide adm
 - Reservation Management: Confirm or decline book reservation requests based on availability.
 
 - Book Returns: Manage the return process to ensure borrowed books are returned to the library inventory promptly.
+
+### `made by kamal sabry`
