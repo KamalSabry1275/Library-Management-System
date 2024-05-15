@@ -34,11 +34,10 @@ const ShowUser = () => {
           <tbody class="table-group-divider">
             <InformationText label="id" value={userInfo.user_id} />
             <InformationText label="user name" value={userInfo.username} />
-            <InformationText label="password" value={userInfo.password} />
             <InformationText label="email" value={userInfo.email} />
             <InformationText label="role" value={userInfo.role} />
             <InformationText
-              label="account btype"
+              label="account type"
               value={userInfo.account_type}
             />
             <InformationText

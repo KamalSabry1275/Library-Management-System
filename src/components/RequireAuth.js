@@ -50,7 +50,7 @@ export const RequireAuth = ({ allowedRoles, children }) => {
           console.log(Date.now(), "time");
 
           if (expirationTimeRefreshToken < Date.now()) {
-            // navigate(routes.Login);
+            navigate(routes.Login);
           } else if (expirationTime < Date.now()) {
             const res = await fetch(apis.RefreshToken, {
               method: "POST",

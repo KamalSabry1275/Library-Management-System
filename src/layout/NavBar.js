@@ -1,7 +1,5 @@
 import { Link } from "react-router-dom";
 import { routes, apis } from "../components/URLs";
-import { ThemeMode } from "../components/LocalStorage";
-import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../rtk/slices/authSlice";
 import { clearUser } from "../rtk/slices/usersSlice";
@@ -40,10 +38,13 @@ export const NavBar = (props) => {
         data-bs-theme="dark"
         id="navbarNav"
       >
+        <h2
+          className="text_color"
+          style={{ padding: "0", margin: "0 0 0 1.5rem" }}
+        >
+          LMS
+        </h2>
         <div className="container-fluid">
-          <Link className="navbar-brand" to={routes.Home}>
-            Home
-          </Link>
           <button
             className="navbar-toggler"
             type="button"
@@ -56,35 +57,20 @@ export const NavBar = (props) => {
           >
             <span className="navbar-toggler-icon"></span>
           </button>
-          {/* <div className="collapse navbar-collapse" id="navbarTogglerDemo03">
-            <ul className="navbar-nav ">
-              <li className="nav-item">
-                <Link
-                  onClick={handleCollapse}
-                  className="nav-link"
-                  to={routes.Users}
-                >
-                  User
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link
-                  onClick={handleCollapse}
-                  className="nav-link"
-                  to={routes.Modules}
-                >
-                  Modules
-                </Link>
-              </li>
-            </ul>
-          </div> */}
+
           <div className="collapse navbar-collapse" id="navbarTogglerDemo03">
             <ul className="navbar-nav ms-auto">
               <li className="nav-item">{props.children}</li>
               {isLoggedIn ? (
                 <li className="nav-item">
                   <Link
-                    onClick={handleLogout}
+                    onClick={() => {
+                      handleLogout();
+                      document.documentElement.style.setProperty(
+                        "--selctor-top",
+                        `4.5rem`
+                      );
+                    }}
                     className="nav-link"
                     to={routes.Login}
                   >

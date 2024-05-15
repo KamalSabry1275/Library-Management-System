@@ -1,11 +1,14 @@
 import FilterInput from "../../../components/FilterInput";
 import Button from "../../../components/Button";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { apis, routes } from "../../../components/URLs";
 import { useDispatch, useSelector } from "react-redux";
 import { filterUsers } from "../../../rtk/slices/usersSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { AllLibrarianUsers } from "./AllLibrarianUsers";
+import { filterBooks } from "../../../rtk/slices/booksSlice";
+import { titleForm } from "../../../components/TitleForm";
+import { AllBooks } from "./AllBooks";
 
 export const FilterBook = () => {
   const [id, setId] = useState("");
@@ -17,7 +20,7 @@ export const FilterBook = () => {
 
   const navigate = useNavigate();
 
-  const users = useSelector((state) => state.users?.data);
+  const users = useSelector((state) => state.books?.data);
   console.log(users);
 
   const dispatch = useDispatch();
@@ -53,12 +56,15 @@ export const FilterBook = () => {
       libraryName: libraryName,
     });
 
-    dispatch(filterUsers([id, title, auther, isbn, type, libraryName]));
+    dispatch(filterBooks([id, title, auther, isbn, type, libraryName]));
   };
+
+  useEffect(() => {
+    titleForm("Filter Book");
+  }, []);
 
   return (
     <>
-      <h2>Filtering</h2>
       <form onSubmit={handlerSubmit}>
         <FilterInput
           name="id"
@@ -95,7 +101,7 @@ export const FilterBook = () => {
 
         <Button label="filter" />
       </form>
-      <AllLibrarianUsers pagination={false} />
+      <AllBooks pagination={false} />
     </>
   );
 };

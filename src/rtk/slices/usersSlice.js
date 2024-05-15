@@ -184,7 +184,6 @@ export const toggleUserActive = createAsyncThunk(
 
       if (access_token) {
         let res = await fetch(apis.Librarian.User.ToggleUserActive, {
-          // let res = await fetch(`http://localhost:9000/users?_page=${number}`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -194,8 +193,13 @@ export const toggleUserActive = createAsyncThunk(
         });
 
         let data = await res.json();
-        console.log(data);
-        return data;
+
+        if (data.success === true) {
+          toast.success(data.msg);
+          return data;
+        } else {
+          toast.error(data.msg);
+        }
       }
     } catch (error) {
       console.log(error);

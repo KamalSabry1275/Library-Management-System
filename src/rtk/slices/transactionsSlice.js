@@ -10,35 +10,32 @@ function getAccessToken() {
   return decryptAndRetrieve("fathy", "access_token");
 }
 
-export const fetchGenres = createAsyncThunk(
-  "genresSlice/fetchGenres",
-  async () => {
+export const fetchTransactions = createAsyncThunk(
+  "transactionSlice/fetchTransactions",
+  async (api) => {
     try {
       const access_token = getAccessToken();
-      // const access_token = "getAccessToken()";
 
       if (!access_token) {
         throw new Error("Access token not found");
       }
 
       if (access_token) {
-        let res = await fetch(apis.Librarian.Genre.All, {
-          // let res = await fetch(`http://localhost:9000/genres`, {
-          method: "GET",
+        let res = await fetch(api, {
+          method: "POST",
           headers: {
             Authorization: `${access_token}`,
           },
         });
 
         let data = await res.json();
+        console.log(data);
         if (data.success === true) {
-          // navigate(routes.Home);
           toast.success(data.msg);
           return data;
         } else {
           toast.error(data.msg);
         }
-        return data;
       }
     } catch (error) {
       console.log(error);
@@ -46,32 +43,26 @@ export const fetchGenres = createAsyncThunk(
   }
 );
 
-export const addGenre = createAsyncThunk(
-  "genresSlice/addGenre",
-  async (genres) => {
+export const transactionConfirm = createAsyncThunk(
+  "transactionSlice/transactionConfirm",
+  async (api) => {
     try {
       const access_token = getAccessToken();
-      // const access_token = "kjkjbjk";
 
       if (!access_token) {
         throw new Error("Access token not found");
       }
 
       if (access_token) {
-        let res = await fetch(apis.Librarian.Genre.Add, {
-          // let res = await fetch("http://localhost:9000/genres", {
+        let res = await fetch(api, {
           method: "POST",
           headers: {
-            "Content-Type": "application/json",
             Authorization: `${access_token}`,
           },
-          body: JSON.stringify({
-            names: genres,
-          }),
         });
 
         let data = await res.json();
-
+        console.log(data);
         if (data.success === true) {
           toast.success(data.msg);
           return data;
@@ -80,35 +71,37 @@ export const addGenre = createAsyncThunk(
         }
       }
     } catch (error) {
-      toast.error(error);
+      console.log(error);
     }
   }
 );
 
-export const deleteGenre = createAsyncThunk(
-  "genresSlice/deleteGenre",
-  async (genre_id) => {
+export const transactionDelete = createAsyncThunk(
+  "transactionSlice/transactionDelete",
+  async (api) => {
     try {
       const access_token = getAccessToken();
-      // const access_token = "11";
-      let res = await fetch(
-        apis.Librarian.Genre.Delete.replace(":id", genre_id),
-        {
-          // let res = await fetch(`http://localhost:9000/genres/${genre_id}`, {
+
+      if (!access_token) {
+        throw new Error("Access token not found");
+      }
+
+      if (access_token) {
+        let res = await fetch(api, {
           method: "DELETE",
           headers: {
             Authorization: `${access_token}`,
           },
+        });
+
+        let data = await res.json();
+        console.log(data);
+        if (data.success === true) {
+          toast.success(data.msg);
+          return data;
+        } else {
+          toast.error(data.msg);
         }
-      );
-
-      let data = await res.json();
-
-      if (data.success === true) {
-        toast.success(data.msg);
-        return data;
-      } else {
-        toast.error(data.msg);
       }
     } catch (error) {
       console.log(error);
@@ -122,55 +115,56 @@ const initialState = {
   error: null,
 };
 
-export const genresSlice = createSlice({
+export const transactionsSlice = createSlice({
   initialState: initialState,
-  name: "genresSlice",
+  name: "usersSlice",
   reducers: {
-    clearProject: (state) => initialState,
+    clearTransactions: (state) => initialState,
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchGenres.pending, (state) => {
+      .addCase(fetchTransactions.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchGenres.fulfilled, (state, action) => {
+      .addCase(fetchTransactions.fulfilled, (state, action) => {
         state.loading = false;
         state.data = action.payload?.data;
-        // state.data = action.payload;
       })
-      .addCase(fetchGenres.rejected, (state, action) => {
+      .addCase(fetchTransactions.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error?.message;
       });
     builder
-      .addCase(addGenre.pending, (state) => {
+      .addCase(transactionConfirm.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(addGenre.fulfilled, (state, action) => {
+      .addCase(transactionConfirm.fulfilled, (state, action) => {
         state.loading = false;
         state.data = action.payload?.data;
       })
-      .addCase(addGenre.rejected, (state, action) => {
+      .addCase(transactionConfirm.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error?.message;
       });
     builder
-      .addCase(deleteGenre.pending, (state) => {
+      .addCase(transactionDelete.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(deleteGenre.fulfilled, (state, action) => {
+      .addCase(transactionDelete.fulfilled, (state, action) => {
         state.loading = false;
-        state.data = action.payload?.data;
+        state.data = state.data = state.data.filter((item) => {
+          return item.transaction_id != action.payload?.id;
+        });
       })
-      .addCase(deleteGenre.rejected, (state, action) => {
+      .addCase(transactionDelete.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error?.message;
       });
   },
 });
 
-export const { clearProject } = genresSlice.actions;
-export default genresSlice.reducer;
+export const { clearTransactions } = transactionsSlice.actions;
+export default transactionsSlice.reducer;

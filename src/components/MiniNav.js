@@ -1,7 +1,10 @@
-import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export const MiniNav = ({ defaultValue = "", value, elements = [] }) => {
   const navigate = useNavigate();
+  const location = useLocation();
+
   return (
     <div className="mini-nav">
       <ul>

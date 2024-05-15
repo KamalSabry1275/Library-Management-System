@@ -1,18 +1,11 @@
 import { useEffect, useState } from "react";
 import { apis, routes } from "../../../components/URLs";
-import { decryptAndRetrieve } from "../../../rtk/slices/authSlice";
 import { useDispatch, useSelector } from "react-redux";
-import Button from "../../../components/Button";
 import { Link, useNavigate } from "react-router-dom";
-import {
-  clearUser,
-  deleteUser,
-  fetchUsers,
-  toggleUserActive,
-} from "../../../rtk/slices/usersSlice";
+import { clearUser, fetchUsers } from "../../../rtk/slices/usersSlice";
 
-export const AllLibrarianUsers = ({ pagination = true }) => {
-  const users = useSelector((state) => state.users?.data);
+export const AllBooks = ({ pagination = true }) => {
+  const users = useSelector((state) => state.books?.data);
   const [number_of_page, setNumOfPAge] = useState(1);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -44,47 +37,33 @@ export const AllLibrarianUsers = ({ pagination = true }) => {
 
   return (
     <>
-      <h2>All Users</h2>
+      <h2>All Books</h2>
       <table className="table table-bordered">
         <thead>
           <tr>
             <th scope="col">#</th>
             <th scope="col">Id</th>
-            <th scope="col">Name</th>
-            <th scope="col">Email</th>
-            <th scope="col">Is Active</th>
+            <th scope="col">Title</th>
+            <th scope="col">Auther</th>
+            <th scope="col">ISBN</th>
+            <th scope="col">Copies</th>
+            <th scope="col">Available</th>
+            <th scope="col">Library Name</th>
           </tr>
         </thead>
         <tbody className="table-group-divider">
           {users?.map((user, index) => {
             return (
-              <tr key={`${user}-${index}`}>
+              <tr>
                 <th scope="row">{index + 1 + (number_of_page - 1) * 10}</th>
 
-                <td>{user.user_id}</td>
-                <td>{user.username}</td>
-                <td>{user.email}</td>
-                <td>
-                  <div
-                    style={{ display: "flex", justifyContent: "space-between" }}
-                  >
-                    <label style={{ margin: "0" }}>
-                      {String(user.user_libraries[0]?.is_active)}
-                    </label>
-                    <button
-                      style={{
-                        margin: "0.2rem 0.5rem",
-                        width: "fit-content",
-                      }}
-                      className="btn btn-success "
-                      onClick={() => {
-                        dispatch(toggleUserActive(user.user_id));
-                      }}
-                    >
-                      Toggle State
-                    </button>
-                  </div>
-                </td>
+                <td>{user.book_id}</td>
+                <td>{user.title}</td>
+                <td>{user.author}</td>
+                <td>{user.isbn}</td>
+                <td>{user.total_copies}</td>
+                <td>{user.available_copies}</td>
+                <td>{user.library_name}</td>
               </tr>
             );
           })}

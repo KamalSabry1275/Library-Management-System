@@ -31,14 +31,9 @@ export const routes = {
       Return: "return",
     },
   },
-  // Modules: "/modules",
-  // LiveProjects: "/liveprojects",
-  // Editor: "/editor/:projectID",
-  // EditorProject: "project",
-  // EditorRule: "rule",
 };
 
-const DOMIN = "5.181.177.3:8688";
+const DOMIN = "5.181.177.3:6919";
 
 export const apis = {
   Admin: {
@@ -64,49 +59,28 @@ export const apis = {
       Add: `http://${DOMIN}/api/v1/book/add`,
       Update: `http://${DOMIN}/api/v1/book/update/:id`,
       Delete: `http://${DOMIN}/api/v1/book/delete/:id`,
-      Filter: `http://${DOMIN}/api/v1/user/librarian/filter?`,
+      Filter: `http://${DOMIN}/api/v1/book/librarian/filter?`,
       Transaction: {
         //states => Borrow_request - Returned - Borrowed
-        FilterByState: `http://${DOMIN}/api/v1/book/librarian/requestBooks?state=:state`,
+        FilterByState: `http://${DOMIN}/api/v1/book/librarian/requestedBooks?state=:state`,
         Borrow: {
           Confirm: `http://${DOMIN}/api/v1/book/librarian/confirmBorrow?transactionId=:id`,
-          Delete: `http://${DOMIN}/api/v1/book/deleteTransaction?transactionId=:id`,
+          Delete: `http://${DOMIN}/api/v1/book/librarian/deleteTransaction?transactionId=:id`,
         },
         Reserve: {
           Confirm: `http://${DOMIN}/api/v1/book/librarian/confirmReserve?reservationId=:id`,
-          Delete: `http://${DOMIN}/api/v1/book/deleteReservation?reservationId=:id`,
+          Delete: `http://${DOMIN}/api/v1/book/librarian/deleteReservation?reservationId=:id`,
           //status => Pending - Confirmed - Expired
           FilterByStatu: `http://${DOMIN}/api/v1/book/librarian/reservedBooks?status=:status`,
         },
         Return: {
-          Confirm: `http://${DOMIN}/api/v1/book/librarian/confirmReturn??transactionId=:id`,
+          Confirm: `http://${DOMIN}/api/v1/book/librarian/confirmReturn?transactionId=:id`,
+          Delete: `http://${DOMIN}/api/v1/book/librarian/deleteTransaction?transactionId=:id`,
         },
       },
     },
   },
-  // Project: {
-  //   All: `http://${DOMIN}/api/v1/project/all`,
-  //   Create: `http://${DOMIN}/api/v1/project/create`,
-  //   Rename: `http://${DOMIN}/api/v1/project/update-project-name/:projectID`,
-  //   Description: `http://${DOMIN}/api/v1/project/update-project-description/:projectID`,
-  //   Update: `http://${DOMIN}/api/v1/project/update/:projectID`,
-  //   Delete: `http://${DOMIN}/api/v1/project/delete/:projectID`,
-  // },
-  // Module: {
-  //   All: `http://${DOMIN}/api/v1/module/all`,
-  //   Create: `http://${DOMIN}/api/v1/project/create`,
-  //   Rename: `http://${DOMIN}/api/v1/project/update-project-name/:projectID`,
-  //   Description: `http://${DOMIN}/api/v1/project/update-project-description/:projectID`,
-  //   Update: `http://${DOMIN}/api/v1/project/update/:projectID`,
-  //   Delete: `http://${DOMIN}/api/v1/project/delete/:projectID`,
-  // },
-  // Rule: {
-  //   All: `http://${DOMIN}/api/v1/rule/all/:projectID`,
-  //   Save: `http://${DOMIN}/api/v1/rule/save/:projectID`,
-  //   Delete: `http://${DOMIN}/api/v1/rule/delete/:projectID/:moduleID/:ruleID`,
-  // },
-  // LoginByGoogle: `http://${DOMIN}/api/v1/user/google-login`,
-  // RegisterByGoogle: `http://${DOMIN}/api/v1/user/google-register`,
+
   Register: `http://${DOMIN}/api/v1/user/register`,
   Login: `http://${DOMIN}/api/v1/user/login`,
   Logout: `http://${DOMIN}/api/v1/user/logout`,
@@ -116,6 +90,3 @@ export const apis = {
   SendEmailVerify: `http://${DOMIN}/api/v1/user/sendEmail-verify`,
   RefreshToken: `http://${DOMIN}/api/v1/user/refresh-token`,
 };
-
-// console.log(routes.Home); // Output: "/"
-// console.log(routes.EditorProject.replace(":projectID", "123")); // Output: "/editorproject/123"

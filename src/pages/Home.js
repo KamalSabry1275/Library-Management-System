@@ -19,14 +19,13 @@ function Home() {
       <div className="home">
         <section>
           <h1>Library Management System</h1>
-          {/* <p>
-              The project is focused on creating an IoT platform for smart
-              homes, allowing users to choose modules and configure pin settings
-              on a microcontroller. Once the project setup is saved, it connects
-              with the microcontroller via WebSocket for signal transmission and
-              control, enabling users to manage their smart home devices
-              seamlessly.
-            </p> */}
+          <p style={{ maxWidth: "55rem", marginBottom: "5rem" }}>
+            Welcome to the Library Management System! This system is designed to
+            provide administrators and librarians with powerful tools to
+            efficiently manage library operations. Whether you're overseeing
+            user accounts, organizing library resources, or handling
+            transactions, this system has you covered.
+          </p>
           <CitySvg />
         </section>
         <section>

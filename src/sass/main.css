@@ -464,12 +464,23 @@
   position: relative;
   z-index: 3;
 }
+.sidebar .list .item-list input[type=radio] {
+  display: none;
+}
+.sidebar .list .item-list input[type=radio]:checked + .item {
+  margin-left: 4rem;
+}
+.sidebar .list .item-list input[type=radio] + .item {
+  margin-left: 0;
+}
 .sidebar .list .item-list .item {
   cursor: pointer;
   display: inline-block;
   color: rgba(255, 255, 255, 0.8);
   text-decoration: none;
   padding: 1rem;
+  width: 10rem;
+  text-align: left;
 }
 .sidebar .list .item-list .item:hover {
   color: #787878;

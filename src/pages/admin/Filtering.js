@@ -1,12 +1,13 @@
 import FilterInput from "../../components/FilterInput";
 import Button from "../../components/Button";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { apis, routes } from "../../components/URLs";
 import { useDispatch, useSelector } from "react-redux";
 import { filterUsers } from "../../rtk/slices/usersSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { deleteUser, fetchUsers } from "../../rtk/slices/usersSlice";
 import { AllUsers } from "./AllUsers";
+import { titleForm } from "../../components/TitleForm";
 
 const Filtering = () => {
   const [id, setId] = useState("");
@@ -84,9 +85,12 @@ const Filtering = () => {
     );
   };
 
+  useEffect(() => {
+    titleForm("filtering");
+  }, []);
+
   return (
     <>
-      <h2>Filtering</h2>
       <form onSubmit={handlerSubmit}>
         <FilterInput
           name="id"

@@ -84,12 +84,27 @@ $bg-color-selector: #191919;
       text-transform: capitalize;
       position: relative;
       z-index: 3;
+
+      input[type="radio"] {
+        display: none;
+      }
+
+      input[type="radio"]:checked + .item {
+        margin-left: 4rem;
+      }
+
+      input[type="radio"] + .item {
+        margin-left: 0;
+      }
+
       .item {
         cursor: pointer;
         display: inline-block;
         color: rgba(255, 255, 255, 0.8);
         text-decoration: none;
         padding: 1rem;
+        width: 10rem;
+        text-align: left;
         &:hover {
           color: #787878;
         }
