@@ -11,42 +11,6 @@ function getAccessToken() {
   return decryptAndRetrieve("fathy", "access_token");
 }
 
-export const fetchBooks = createAsyncThunk(
-  "booksSlice/fetchBooks",
-  async () => {
-    try {
-      // const access_token = getAccessToken();
-      const access_token = "getAccessToken()";
-
-      if (!access_token) {
-        throw new Error("Access token not found");
-      }
-
-      if (access_token) {
-        // let res = await fetch(apis.Librarian.Genre.All, {
-        let res = await fetch(`http://localhost:9000/genres`, {
-          method: "GET",
-          headers: {
-            Authorization: `${access_token}`,
-          },
-        });
-
-        let data = await res.json();
-        if (data.success === true) {
-          // navigate(routes.Home);
-          toast.success(data.msg);
-          return data;
-        } else {
-          toast.error(data.msg);
-        }
-        return data;
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
-);
-
 export const addBook = createAsyncThunk(
   "booksSlice/addBook",
   async ([
@@ -60,7 +24,6 @@ export const addBook = createAsyncThunk(
   ]) => {
     try {
       const access_token = getAccessToken();
-      // const access_token = "kjkjbjk";
 
       if (!access_token) {
         throw new Error("Access token not found");
@@ -68,7 +31,6 @@ export const addBook = createAsyncThunk(
 
       if (access_token) {
         let res = await fetch(apis.Librarian.Book.Add, {
-          // let res = await fetch("http://localhost:9000/books", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -102,14 +64,14 @@ export const addBook = createAsyncThunk(
 
 export const filterBooks = createAsyncThunk(
   "booksSlice/filterBooks",
-  async ([id, title, auther, isbn, type, libraryName]) => {
+  async ([number, id, title, auther, isbn, type, libraryName]) => {
     try {
       const access_token = getAccessToken();
 
-      let APIFilter = apis.Librarian.Book.Filter;
+      let APIFilter = apis.Librarian.Book.Filter.replace(":number", number);
       if (id !== "") APIFilter += "book_id=" + id + "&";
       if (title !== "") APIFilter += "title=" + title + "&";
-      if (auther !== "") APIFilter += "auther=" + auther + "&";
+      if (auther !== "") APIFilter += "author=" + auther + "&";
       if (isbn !== "") APIFilter += "isbn=" + isbn + "&";
       if (type !== "") APIFilter += "type=" + type + "&";
       if (libraryName !== "") APIFilter += "library_name=" + libraryName + "&";
@@ -138,10 +100,8 @@ export const deleteBook = createAsyncThunk(
   "booksSlice/deleteBook",
   async (genre_id) => {
     try {
-      // const access_token = getAccessToken();
-      const access_token = "11";
-      // let res = await fetch(apis.Librarian.Genre.Delete.replace(":id",), {
-      let res = await fetch(`http://localhost:9000/genres/${genre_id}`, {
+      const access_token = getAccessToken();
+      let res = await fetch(apis.Librarian.Book.Delete.replace(":id"), {
         method: "DELETE",
         headers: {
           Authorization: `${access_token}`,
@@ -152,7 +112,7 @@ export const deleteBook = createAsyncThunk(
 
       if (data.success === true) {
         toast.success(data.msg);
-        // return data;
+        return data;
       } else {
         toast.error(data.msg);
       }
@@ -164,6 +124,7 @@ export const deleteBook = createAsyncThunk(
 
 const initialState = {
   data: null,
+  page: null,
   loading: false,
   error: null,
 };
@@ -172,23 +133,9 @@ export const booksSlice = createSlice({
   initialState: initialState,
   name: "booksSlice",
   reducers: {
-    clearProject: (state) => initialState,
+    clearBook: (state) => initialState,
   },
   extraReducers: (builder) => {
-    builder
-      .addCase(fetchBooks.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(fetchBooks.fulfilled, (state, action) => {
-        state.loading = false;
-        // state.data = action.payload?.data;
-        state.data = action.payload;
-      })
-      .addCase(fetchBooks.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error?.message;
-      });
     builder
       .addCase(addBook.pending, (state) => {
         state.loading = true;
@@ -210,6 +157,7 @@ export const booksSlice = createSlice({
       .addCase(filterBooks.fulfilled, (state, action) => {
         state.loading = false;
         state.data = action.payload?.data;
+        state.page = action.payload?.page;
       })
       .addCase(filterBooks.rejected, (state, action) => {
         state.loading = false;
@@ -222,7 +170,9 @@ export const booksSlice = createSlice({
       })
       .addCase(deleteBook.fulfilled, (state, action) => {
         state.loading = false;
-        state.data = action.payload?.data;
+        state.data = state.data.filter((item) => {
+          return item.book_id != action.payload?.id;
+        });
       })
       .addCase(deleteBook.rejected, (state, action) => {
         state.loading = false;
@@ -231,5 +181,5 @@ export const booksSlice = createSlice({
   },
 });
 
-export const { clearProject } = booksSlice.actions;
+export const { clearBook } = booksSlice.actions;
 export default booksSlice.reducer;

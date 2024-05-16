@@ -51,7 +51,6 @@ export const addGenre = createAsyncThunk(
   async (genres) => {
     try {
       const access_token = getAccessToken();
-      // const access_token = "kjkjbjk";
 
       if (!access_token) {
         throw new Error("Access token not found");
@@ -59,7 +58,6 @@ export const addGenre = createAsyncThunk(
 
       if (access_token) {
         let res = await fetch(apis.Librarian.Genre.Add, {
-          // let res = await fetch("http://localhost:9000/genres", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -90,11 +88,9 @@ export const deleteGenre = createAsyncThunk(
   async (genre_id) => {
     try {
       const access_token = getAccessToken();
-      // const access_token = "11";
       let res = await fetch(
         apis.Librarian.Genre.Delete.replace(":id", genre_id),
         {
-          // let res = await fetch(`http://localhost:9000/genres/${genre_id}`, {
           method: "DELETE",
           headers: {
             Authorization: `${access_token}`,
@@ -126,7 +122,7 @@ export const genresSlice = createSlice({
   initialState: initialState,
   name: "genresSlice",
   reducers: {
-    clearProject: (state) => initialState,
+    clearGenre: (state) => initialState,
   },
   extraReducers: (builder) => {
     builder
@@ -137,7 +133,6 @@ export const genresSlice = createSlice({
       .addCase(fetchGenres.fulfilled, (state, action) => {
         state.loading = false;
         state.data = action.payload?.data;
-        // state.data = action.payload;
       })
       .addCase(fetchGenres.rejected, (state, action) => {
         state.loading = false;
@@ -172,5 +167,5 @@ export const genresSlice = createSlice({
   },
 });
 
-export const { clearProject } = genresSlice.actions;
+export const { clearGenre } = genresSlice.actions;
 export default genresSlice.reducer;

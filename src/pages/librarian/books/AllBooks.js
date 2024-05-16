@@ -3,21 +3,20 @@ import { apis, routes } from "../../../components/URLs";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { clearUser, fetchUsers } from "../../../rtk/slices/usersSlice";
+import { clearBook, filterBooks } from "../../../rtk/slices/booksSlice";
 
 export const AllBooks = ({ pagination = true }) => {
-  const users = useSelector((state) => state.books?.data);
-  const [number_of_page, setNumOfPAge] = useState(1);
+  const books = useSelector((state) => state.books);
+  const [number_of_page, setNumOfPAge] = useState(books?.page);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const next_page = () => {
     let num;
-    if (users.length > 0) {
+    if (books?.data?.length > 0) {
       num = number_of_page + 1;
-      dispatch(clearUser());
-      dispatch(
-        fetchUsers(apis.Librarian.User.AllUsers.replace(":number", num))
-      );
+      dispatch(clearBook());
+      dispatch(filterBooks());
       setNumOfPAge(num);
     }
     console.log(num);
@@ -27,9 +26,8 @@ export const AllBooks = ({ pagination = true }) => {
     let num;
     if (number_of_page > 1) {
       num = number_of_page - 1;
-      dispatch(
-        fetchUsers(apis.Librarian.User.AllUsers.replace(":number", num))
-      );
+      dispatch(clearBook());
+      dispatch(filterBooks());
       setNumOfPAge(num);
     }
     console.log(num);
@@ -44,7 +42,7 @@ export const AllBooks = ({ pagination = true }) => {
             <th scope="col">#</th>
             <th scope="col">Id</th>
             <th scope="col">Title</th>
-            <th scope="col">Auther</th>
+            <th scope="col">Author</th>
             <th scope="col">ISBN</th>
             <th scope="col">Copies</th>
             <th scope="col">Available</th>
@@ -52,18 +50,18 @@ export const AllBooks = ({ pagination = true }) => {
           </tr>
         </thead>
         <tbody className="table-group-divider">
-          {users?.map((user, index) => {
+          {books?.data?.map((book, index) => {
             return (
-              <tr>
-                <th scope="row">{index + 1 + (number_of_page - 1) * 10}</th>
+              <tr key={`${book}-${index}`}>
+                <th scope="row">{index + 1 + (books?.page - 1) * 10}</th>
 
-                <td>{user.book_id}</td>
-                <td>{user.title}</td>
-                <td>{user.author}</td>
-                <td>{user.isbn}</td>
-                <td>{user.total_copies}</td>
-                <td>{user.available_copies}</td>
-                <td>{user.library_name}</td>
+                <td>{book.book_id}</td>
+                <td>{book.title}</td>
+                <td>{book.author}</td>
+                <td>{book.isbn}</td>
+                <td>{book.total_copies}</td>
+                <td>{book.available_copies}</td>
+                <td>{book.library_name}</td>
               </tr>
             );
           })}

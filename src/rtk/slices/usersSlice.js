@@ -22,7 +22,6 @@ export const fetchUsers = createAsyncThunk(
 
       if (access_token) {
         let res = await fetch(api, {
-          // let res = await fetch(`http://localhost:9000/users?_page=${number}`, {
           method: "GET",
           headers: {
             Authorization: `${access_token}`,
@@ -42,6 +41,7 @@ export const fetchUsers = createAsyncThunk(
 export const filterUsers = createAsyncThunk(
   "userSlice/filterUsers",
   async ([
+    number,
     id,
     userName,
     email,
@@ -54,7 +54,7 @@ export const filterUsers = createAsyncThunk(
     try {
       const access_token = getAccessToken();
 
-      let APIFilter = apis.Admin.Filter;
+      let APIFilter = apis.Admin.Filter.replace(":number", number);
       if (id !== "") APIFilter += "user_id=" + id + "&";
       if (userName !== "") APIFilter += "username=" + userName + "&";
       if (email !== "") APIFilter += "email=" + email + "&";
@@ -195,10 +195,10 @@ export const toggleUserActive = createAsyncThunk(
         let data = await res.json();
 
         if (data.success === true) {
-          toast.success(data.msg);
+          toast.success("toggle state success");
           return data;
         } else {
-          toast.error(data.msg);
+          toast.error("toggle state failed");
         }
       }
     } catch (error) {
@@ -209,6 +209,7 @@ export const toggleUserActive = createAsyncThunk(
 
 const initialState = {
   data: null,
+  page: null,
   loading: false,
   error: null,
 };
@@ -218,16 +219,6 @@ export const usersSlice = createSlice({
   name: "usersSlice",
   reducers: {
     clearUser: (state) => initialState,
-    updateModule: (state, action) => {
-      const { id, newData } = action.payload;
-
-      state.data = state.data.map((item) => {
-        // console.log(item._id);
-        return item._id === id ? { ...item, modules: [...newData] } : item;
-      });
-
-      console.log(state.data);
-    },
   },
   extraReducers: (builder) => {
     builder
@@ -238,7 +229,7 @@ export const usersSlice = createSlice({
       .addCase(fetchUsers.fulfilled, (state, action) => {
         state.loading = false;
         state.data = action.payload?.data;
-        // state.data = action.payload;
+        state.page = action.payload?.page;
       })
       .addCase(fetchUsers.rejected, (state, action) => {
         state.loading = false;
@@ -252,6 +243,7 @@ export const usersSlice = createSlice({
       .addCase(filterUsers.fulfilled, (state, action) => {
         state.loading = false;
         state.data = action.payload?.data;
+        state.page = action.payload?.page;
       })
       .addCase(filterUsers.rejected, (state, action) => {
         state.loading = false;
@@ -277,7 +269,20 @@ export const usersSlice = createSlice({
       })
       .addCase(toggleUserActive.fulfilled, (state, action) => {
         state.loading = false;
-        state.data = action.payload?.data;
+        state.data = state.data.map((item) => {
+          if (item.user_id === action.payload?.id) {
+            return {
+              ...item,
+              user_libraries: [
+                {
+                  is_active: action.payload?.isActive,
+                },
+              ],
+            };
+          }
+          return item;
+        });
+        console.log(state.data);
       })
       .addCase(toggleUserActive.rejected, (state, action) => {
         state.loading = false;

@@ -1,27 +1,25 @@
 import FilterInput from "../../../components/FilterInput";
 import Button from "../../../components/Button";
-import { useEffect, useMemo, useState } from "react";
-import { apis, routes } from "../../../components/URLs";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { filterUsers } from "../../../rtk/slices/usersSlice";
-import { Link, useNavigate } from "react-router-dom";
-import { AllLibrarianUsers } from "./AllLibrarianUsers";
-import { filterBooks } from "../../../rtk/slices/booksSlice";
+import { useNavigate } from "react-router-dom";
+import { clearBook, filterBooks } from "../../../rtk/slices/booksSlice";
 import { titleForm } from "../../../components/TitleForm";
 import { AllBooks } from "./AllBooks";
 
 export const FilterBook = () => {
   const [id, setId] = useState("");
   const [title, setTitle] = useState("");
-  const [auther, setAuther] = useState("");
+  const [author, setAuthor] = useState("");
   const [type, setType] = useState("");
   const [isbn, setISBN] = useState("");
   const [libraryName, setLibraryName] = useState("");
 
-  const navigate = useNavigate();
+  const books = useSelector((state) => state.books);
+  console.log(books);
+  const [number_of_page, setNumOfPAge] = useState(books?.page);
 
-  const users = useSelector((state) => state.books?.data);
-  console.log(users);
+  const navigate = useNavigate();
 
   const dispatch = useDispatch();
 
@@ -32,7 +30,7 @@ export const FilterBook = () => {
     setTitle(value);
   };
   const handlerAuthor = (value) => {
-    setAuther(value);
+    setAuthor(value);
   };
   const handlerISBN = (value) => {
     setISBN(value);
@@ -46,17 +44,42 @@ export const FilterBook = () => {
 
   const handlerSubmit = (e) => {
     e.preventDefault();
-
     console.log({
       id: id,
       title: title,
-      auther: auther,
+      author: author,
       isbn: isbn,
       type: type,
       libraryName: libraryName,
     });
+    dispatch(clearBook());
+    dispatch(filterBooks([1, id, title, author, isbn, type, libraryName]));
+  };
 
-    dispatch(filterBooks([id, title, auther, isbn, type, libraryName]));
+  const next_page = () => {
+    let number;
+    if (books?.data?.length > 0) {
+      number = number_of_page + 1;
+      dispatch(clearBook());
+      dispatch(
+        filterBooks([number, id, title, author, isbn, type, libraryName])
+      );
+      setNumOfPAge(number);
+    }
+    console.log(number);
+  };
+
+  const previous_page = () => {
+    let number;
+    if (number_of_page > 1) {
+      number = number_of_page - 1;
+      dispatch(clearBook());
+      dispatch(
+        filterBooks([number, id, title, author, isbn, type, libraryName])
+      );
+      setNumOfPAge(number);
+    }
+    console.log(number);
   };
 
   useEffect(() => {
@@ -77,9 +100,9 @@ export const FilterBook = () => {
           value={title}
         />
         <FilterInput
-          name="auther"
+          name="author"
           onChange={(value) => handlerAuthor(value)}
-          value={auther}
+          value={author}
         />
         <FilterInput
           name="isbn"
@@ -102,6 +125,24 @@ export const FilterBook = () => {
         <Button label="filter" />
       </form>
       <AllBooks pagination={false} />
+      <div className="pagination">
+        <button
+          className="btn btn-outline-primary"
+          onClick={() => {
+            previous_page();
+          }}
+        >
+          Previous
+        </button>
+        <button
+          className="btn btn-outline-primary"
+          onClick={() => {
+            next_page();
+          }}
+        >
+          Next
+        </button>
+      </div>
     </>
   );
 };

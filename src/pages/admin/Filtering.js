@@ -3,7 +3,7 @@ import Button from "../../components/Button";
 import { useEffect, useMemo, useState } from "react";
 import { apis, routes } from "../../components/URLs";
 import { useDispatch, useSelector } from "react-redux";
-import { filterUsers } from "../../rtk/slices/usersSlice";
+import { clearUser, filterUsers } from "../../rtk/slices/usersSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { deleteUser, fetchUsers } from "../../rtk/slices/usersSlice";
 import { AllUsers } from "./AllUsers";
@@ -19,10 +19,11 @@ const Filtering = () => {
   const [verified, setVerified] = useState("");
   const [isActive, setIsActive] = useState("");
 
-  const navigate = useNavigate();
-
-  const users = useSelector((state) => state.users?.data);
+  const users = useSelector((state) => state.users);
+  const [number_of_page, setNumOfPAge] = useState(users?.page);
   console.log(users);
+
+  const navigate = useNavigate();
 
   const dispatch = useDispatch();
 
@@ -73,6 +74,7 @@ const Filtering = () => {
     );
     dispatch(
       filterUsers([
+        1,
         id,
         userName,
         email,
@@ -83,6 +85,52 @@ const Filtering = () => {
         isActive,
       ])
     );
+  };
+
+  const next_page = () => {
+    let number;
+    if (users?.data?.length > 0) {
+      number = number_of_page + 1;
+      dispatch(clearUser());
+      dispatch(
+        filterUsers([
+          number,
+          id,
+          userName,
+          email,
+          accountType,
+          libraryName,
+          role,
+          verified,
+          isActive,
+        ])
+      );
+      setNumOfPAge(number);
+    }
+    console.log(number);
+  };
+
+  const previous_page = () => {
+    let number;
+    if (number_of_page > 1) {
+      number = number_of_page - 1;
+      dispatch(clearUser());
+      dispatch(
+        filterUsers([
+          number,
+          id,
+          userName,
+          email,
+          accountType,
+          libraryName,
+          role,
+          verified,
+          isActive,
+        ])
+      );
+      setNumOfPAge(number);
+    }
+    console.log(number);
   };
 
   useEffect(() => {
@@ -143,6 +191,24 @@ const Filtering = () => {
         <Button label="filter" />
       </form>
       <AllUsers pagination={false} />
+      <div className="pagination">
+        <button
+          className="btn btn-outline-primary"
+          onClick={() => {
+            previous_page();
+          }}
+        >
+          Previous
+        </button>
+        <button
+          className="btn btn-outline-primary"
+          onClick={() => {
+            next_page();
+          }}
+        >
+          Next
+        </button>
+      </div>
     </>
   );
 };

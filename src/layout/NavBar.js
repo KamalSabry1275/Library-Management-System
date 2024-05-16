@@ -38,13 +38,16 @@ export const NavBar = (props) => {
         data-bs-theme="dark"
         id="navbarNav"
       >
-        <h2
-          className="text_color"
-          style={{ padding: "0", margin: "0 0 0 1.5rem" }}
-        >
-          LMS
-        </h2>
         <div className="container-fluid">
+          <h2
+            className="text_color"
+            style={{
+              padding: "0",
+              margin: "0 0 0 1.5rem",
+            }}
+          >
+            LMS
+          </h2>
           <button
             className="navbar-toggler"
             type="button"

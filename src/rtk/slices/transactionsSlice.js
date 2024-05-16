@@ -155,8 +155,10 @@ export const transactionsSlice = createSlice({
       })
       .addCase(transactionDelete.fulfilled, (state, action) => {
         state.loading = false;
-        state.data = state.data = state.data.filter((item) => {
-          return item.transaction_id != action.payload?.id;
+        state.data = state.data.filter((item) => {
+          if (item.transaction_id)
+            return item.transaction_id != action.payload?.id;
+          else return item.reservation_id != action.payload?.id;
         });
       })
       .addCase(transactionDelete.rejected, (state, action) => {

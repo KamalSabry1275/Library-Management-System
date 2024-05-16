@@ -33,7 +33,8 @@ export const routes = {
   },
 };
 
-const DOMIN = "5.181.177.3:6919";
+const port = "6224";
+const DOMIN = `5.181.177.3:${port}`;
 
 export const apis = {
   Admin: {
@@ -42,7 +43,7 @@ export const apis = {
     Edit: `http://${DOMIN}/api/v1/user/admin/edit`,
     Delete: `http://${DOMIN}/api/v1/user/admin/delete`,
     IsActive: `http://${DOMIN}/api/v1/user/admin/isActive`,
-    Filter: `http://${DOMIN}/api/v1/user/admin/filter?`,
+    Filter: `http://${DOMIN}/api/v1/user/admin/filter?page=:number&`,
     GetLibrarian: `http://${DOMIN}/api/v1/user/admin/getLibrarian`,
   },
   Librarian: {
@@ -59,7 +60,7 @@ export const apis = {
       Add: `http://${DOMIN}/api/v1/book/add`,
       Update: `http://${DOMIN}/api/v1/book/update/:id`,
       Delete: `http://${DOMIN}/api/v1/book/delete/:id`,
-      Filter: `http://${DOMIN}/api/v1/book/librarian/filter?`,
+      Filter: `http://${DOMIN}/api/v1/book/librarian/filter?page=:number&`,
       Transaction: {
         //states => Borrow_request - Returned - Borrowed
         FilterByState: `http://${DOMIN}/api/v1/book/librarian/requestedBooks?state=:state`,

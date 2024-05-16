@@ -8,14 +8,14 @@ import { clearUser, deleteUser, fetchUsers } from "../../rtk/slices/usersSlice";
 import { clear } from "@testing-library/user-event/dist/clear";
 
 export const AllUsers = ({ pagination = true }) => {
-  const users = useSelector((state) => state.users?.data);
-  const [number_of_page, setNumOfPAge] = useState(1);
+  const users = useSelector((state) => state.users);
+  const [number_of_page, setNumOfPAge] = useState(users?.page);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const next_page = () => {
     let num;
-    if (users.length > 0) {
+    if (users?.data?.length > 0) {
       num = number_of_page + 1;
       dispatch(clearUser());
       dispatch(fetchUsers(apis.Admin.AllUsers.replace(":number", num)));
@@ -28,6 +28,7 @@ export const AllUsers = ({ pagination = true }) => {
     let num;
     if (number_of_page > 1) {
       num = number_of_page - 1;
+      dispatch(clearUser());
       dispatch(fetchUsers(apis.Admin.AllUsers.replace(":number", num)));
       setNumOfPAge(num);
     }
@@ -46,10 +47,10 @@ export const AllUsers = ({ pagination = true }) => {
           </tr>
         </thead>
         <tbody className="table-group-divider">
-          {users?.map((user, index) => {
+          {users?.data?.map((user, index) => {
             return (
               <tr>
-                <th scope="row">{index + 1 + (number_of_page - 1) * 10}</th>
+                <th scope="row">{index + 1 + (users?.page - 1) * 10}</th>
 
                 <td style={{ width: "60%" }}>{user.username}</td>
                 <td>
