@@ -43,11 +43,12 @@ export const RequireAuth = ({ allowedRoles, children }) => {
           const decodedToken = jwtDecode(token);
           const expirationTime = decodedToken.exp * 1000;
 
-          const decodedRefreshToken = jwtDecode(token);
+          const decodedRefreshToken = jwtDecode(refreshToken);
           const expirationTimeRefreshToken = decodedRefreshToken.exp * 1000;
 
           console.log(expirationTime, "expirationTime");
           console.log(Date.now(), "time");
+          console.log(expirationTimeRefreshToken, "expirationTimeRefreshToken");
 
           if (expirationTimeRefreshToken < Date.now()) {
             navigate(routes.Login);

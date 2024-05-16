@@ -79,7 +79,7 @@ export const FilterBook = () => {
         <FilterInput
           name="auther"
           onChange={(value) => handlerAuthor(value)}
-          auther
+          value={auther}
         />
         <FilterInput
           name="isbn"
