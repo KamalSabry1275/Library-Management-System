@@ -67,7 +67,9 @@ function App() {
                 }
               />
               <Route path={routes.ActiveEmail} element={<ActiveEmail />} />
-              <Route path={routes.Home} element={<Home />} />
+              <Route element={<RequireAuth />}>
+                <Route path={routes.Home} element={<Home />} />
+              </Route>
               <Route element={<RequireAuth allowedRoles={"administrator"} />}>
                 <Route path={routes.Admin.AddUser} element={<AddUser />} />
                 <Route path={routes.Admin.EditUser} element={<EditUser />} />

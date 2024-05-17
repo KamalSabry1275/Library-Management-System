@@ -401,7 +401,7 @@
 [theme=true] .sidebar .list .sidebar-selector::after {
   box-shadow: 0.2rem -0.2rem 0 0.2rem #d9d9d9;
 }
-[theme=true] .sidebar .list .item-list a {
+[theme=true] .sidebar .list .item-list .item {
   color: #393939;
 }
 [theme=true] .sidebar .list hr {
@@ -965,6 +965,30 @@ input[type=number]::-webkit-outer-spin-button {
   background-color: #a1a1a1 !important;
 }
 
+.reload {
+  animation: animationLoad 1s linear;
+  -webkit-animation: animationLoad 1s linear;
+  transform-origin: center;
+}
+
+@keyframes animationLoad {
+  0% {
+    transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform-origin: center;
+  }
+  100% {
+    transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform-origin: center;
+  }
+}
 [theme=true] .btn.btn-add {
   color: #393939 !important;
   background-color: #e0e0e0 !important;

@@ -9,23 +9,25 @@ export const AllGenre = () => {
     <>
       <h2>All Genres</h2>
       <table>
-        {genres?.map((genre, index) => {
-          return (
-            <tr key={index}>
-              <td className="p-2">{genre.name}</td>
-              <td>
-                <button
-                  className="btn btn-danger m-1"
-                  onClick={() => {
-                    dispatch(deleteGenre(genre.genre_id));
-                  }}
-                >
-                  delete
-                </button>
-              </td>
-            </tr>
-          );
-        })}
+        <tbody>
+          {genres?.map((genre, index) => {
+            return (
+              <tr key={`${genre}-${index}`}>
+                <td className="p-2">{genre.name}</td>
+                <td>
+                  <button
+                    className="btn btn-danger m-1"
+                    onClick={() => {
+                      dispatch(deleteGenre(genre.genre_id));
+                    }}
+                  >
+                    delete
+                  </button>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
       </table>
     </>
   );

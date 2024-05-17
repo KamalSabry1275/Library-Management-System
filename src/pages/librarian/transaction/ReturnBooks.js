@@ -10,7 +10,7 @@ import {
 import { apis } from "../../../components/URLs";
 
 export const ReturnBooks = () => {
-  const transactions = useSelector((state) => state.transactions?.data);
+  const transactions = useSelector((state) => state.transactions);
   console.log(transactions);
 
   const [state, setState] = useState("");
@@ -25,26 +25,63 @@ export const ReturnBooks = () => {
       dispatch(clearTransactions());
       dispatch(
         fetchTransactions(
-          apis.Librarian.Book.Transaction.FilterByState.replace(":state", value)
+          apis.Librarian.Book.Transaction.FilterByState.replace(
+            ":number",
+            1
+          ).replace(":state", value)
         )
       );
     }
   };
 
-  const handlerConfirm = (id) => {
-    dispatch(
+  const handlerConfirm = async (id) => {
+    await dispatch(
       transactionConfirm(
         apis.Librarian.Book.Transaction.Return.Confirm.replace(":id", id)
       )
     );
   };
 
-  const handlerDelete = (id) => {
-    dispatch(
+  const handlerDelete = async (id) => {
+    await dispatch(
       transactionDelete(
         apis.Librarian.Book.Transaction.Return.Delete.replace(":id", id)
       )
     );
+  };
+
+  const next_page = () => {
+    let number;
+    if (transactions?.data?.length > 0) {
+      number = transactions?.page + 1;
+      dispatch(clearTransactions());
+      dispatch(
+        fetchTransactions(
+          apis.Librarian.Book.Transaction.FilterByState.replace(
+            ":number",
+            number
+          ).replace(":state", state)
+        )
+      );
+    }
+    console.log(number);
+  };
+
+  const previous_page = () => {
+    let number;
+    if (transactions?.page > 1) {
+      number = transactions?.page - 1;
+      dispatch(clearTransactions());
+      dispatch(
+        fetchTransactions(
+          apis.Librarian.Book.Transaction.FilterByState.replace(
+            ":number",
+            number
+          ).replace(":state", state)
+        )
+      );
+    }
+    console.log(number);
   };
 
   return (
@@ -70,7 +107,7 @@ export const ReturnBooks = () => {
         </thead>
         {state != "" && (
           <tbody className="table-group-divider">
-            {transactions?.map((transaction, index) => {
+            {transactions?.data?.map((transaction, index) => {
               let date_expiry_date = new Date(transaction.expiry_date);
               const formatted_expiry_date = date_expiry_date.toLocaleDateString(
                 "en-US",
@@ -97,7 +134,9 @@ export const ReturnBooks = () => {
 
               return (
                 <tr key={`${transaction}-${index}`}>
-                  <th scope="row">{index + 1}</th>
+                  <th scope="row">
+                    {index + 1 + (transactions?.page - 1) * 10}
+                  </th>
                   <td>{transaction.books.title}</td>
                   <td>{transaction.users.username}</td>
                   <td>{formatted_expiry_date}</td>
@@ -107,9 +146,11 @@ export const ReturnBooks = () => {
                       <button
                         className="btn btn-success m-1"
                         type="button"
-                        onClick={() =>
-                          handlerConfirm(transaction.transaction_id)
-                        }
+                        onClick={async (e) => {
+                          await handlerConfirm(transaction.transaction_id);
+                          e.target.parentNode.innerHTML =
+                            "<div style='color:#00aa00'>Confirmed</div>";
+                        }}
                       >
                         Confirm
                       </button>
@@ -117,7 +158,11 @@ export const ReturnBooks = () => {
                     <button
                       className="btn btn-danger m-1"
                       type="button"
-                      onClick={() => handlerDelete(transaction.transaction_id)}
+                      onClick={async (e) => {
+                        await handlerDelete(transaction.transaction_id);
+                        e.target.parentNode.innerHTML =
+                          "<div style='color:#ff0000'>Delete</div>";
+                      }}
                     >
                       Delete
                     </button>
@@ -128,6 +173,24 @@ export const ReturnBooks = () => {
           </tbody>
         )}
       </table>
+      <div className="pagination">
+        <button
+          className="btn btn-outline-primary"
+          onClick={() => {
+            previous_page();
+          }}
+        >
+          Previous
+        </button>
+        <button
+          className="btn btn-outline-primary"
+          onClick={() => {
+            next_page();
+          }}
+        >
+          Next
+        </button>
+      </div>
     </>
   );
 };

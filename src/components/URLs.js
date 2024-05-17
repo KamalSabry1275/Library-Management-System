@@ -33,7 +33,7 @@ export const routes = {
   },
 };
 
-const port = "6224";
+const port = "6786";
 const DOMIN = `5.181.177.3:${port}`;
 
 export const apis = {
@@ -63,7 +63,7 @@ export const apis = {
       Filter: `http://${DOMIN}/api/v1/book/librarian/filter?page=:number&`,
       Transaction: {
         //states => Borrow_request - Returned - Borrowed
-        FilterByState: `http://${DOMIN}/api/v1/book/librarian/requestedBooks?state=:state`,
+        FilterByState: `http://${DOMIN}/api/v1/book/librarian/requestedBooks?page=:number&state=:state`,
         Borrow: {
           Confirm: `http://${DOMIN}/api/v1/book/librarian/confirmBorrow?transactionId=:id`,
           Delete: `http://${DOMIN}/api/v1/book/librarian/deleteTransaction?transactionId=:id`,
@@ -72,7 +72,7 @@ export const apis = {
           Confirm: `http://${DOMIN}/api/v1/book/librarian/confirmReserve?reservationId=:id`,
           Delete: `http://${DOMIN}/api/v1/book/librarian/deleteReservation?reservationId=:id`,
           //status => Pending - Confirmed - Expired
-          FilterByStatu: `http://${DOMIN}/api/v1/book/librarian/reservedBooks?status=:status`,
+          FilterByStatus: `http://${DOMIN}/api/v1/book/librarian/reservedBooks?page=:number&status=:status`,
         },
         Return: {
           Confirm: `http://${DOMIN}/api/v1/book/librarian/confirmReturn?transactionId=:id`,

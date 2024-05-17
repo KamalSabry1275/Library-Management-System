@@ -12,12 +12,9 @@ const FilterInput = ({
 }) => {
   const [showInput, setShowInput] = useState(false);
 
-  if (!showInput) {
-    onChange("");
-  }
-
   const hundleFilterInput = (e) => {
     setShowInput(e.target.checked);
+    if (e.target.checked == false) onChange("");
   };
 
   return (

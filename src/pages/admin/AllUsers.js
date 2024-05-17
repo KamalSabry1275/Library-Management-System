@@ -6,6 +6,8 @@ import Button from "../../components/Button";
 import { Link, useNavigate } from "react-router-dom";
 import { clearUser, deleteUser, fetchUsers } from "../../rtk/slices/usersSlice";
 import { clear } from "@testing-library/user-event/dist/clear";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowsRotate, faUpload } from "@fortawesome/free-solid-svg-icons";
 
 export const AllUsers = ({ pagination = true }) => {
   const users = useSelector((state) => state.users);
@@ -37,7 +39,29 @@ export const AllUsers = ({ pagination = true }) => {
 
   return (
     <>
-      <h2>All Users</h2>
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <h2>All Users</h2>
+        <button style={{ background: "transparent", border: "none" }}>
+          <FontAwesomeIcon
+            icon={faArrowsRotate}
+            style={{
+              color: "#858585",
+              width: "2em",
+              fontSize: "1.2rem",
+            }}
+            onClick={async (e) => {
+              e.target?.classList?.add("reload");
+
+              dispatch(clearUser());
+              await dispatch(
+                fetchUsers(apis.Admin.AllUsers.replace(":number", 1))
+              );
+
+              e.target?.classList?.remove("reload");
+            }}
+          />
+        </button>
+      </div>
       <table className="table table-bordered">
         <thead>
           <tr>

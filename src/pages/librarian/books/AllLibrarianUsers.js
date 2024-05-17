@@ -10,6 +10,8 @@ import {
   fetchUsers,
   toggleUserActive,
 } from "../../../rtk/slices/usersSlice";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowsRotate } from "@fortawesome/free-solid-svg-icons";
 
 export const AllLibrarianUsers = ({ pagination = true }) => {
   const users = useSelector((state) => state.users?.data);
@@ -34,6 +36,7 @@ export const AllLibrarianUsers = ({ pagination = true }) => {
     let num;
     if (number_of_page > 1) {
       num = number_of_page - 1;
+      dispatch(clearUser());
       dispatch(
         fetchUsers(apis.Librarian.User.AllUsers.replace(":number", num))
       );
@@ -44,7 +47,29 @@ export const AllLibrarianUsers = ({ pagination = true }) => {
 
   return (
     <>
-      <h2>All Users</h2>
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <h2>All Users</h2>
+        <button style={{ background: "transparent", border: "none" }}>
+          <FontAwesomeIcon
+            icon={faArrowsRotate}
+            style={{
+              color: "#858585",
+              width: "2em",
+              fontSize: "1.2rem",
+            }}
+            onClick={async (e) => {
+              e.target?.classList?.add("reload");
+
+              dispatch(clearUser());
+              await dispatch(
+                fetchUsers(apis.Librarian.User.AllUsers.replace(":number", 1))
+              );
+
+              e.target?.classList?.remove("reload");
+            }}
+          />
+        </button>
+      </div>
       <table className="table table-bordered">
         <thead>
           <tr>

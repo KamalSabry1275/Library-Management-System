@@ -20,7 +20,6 @@ const Filtering = () => {
   const [isActive, setIsActive] = useState("");
 
   const users = useSelector((state) => state.users);
-  const [number_of_page, setNumOfPAge] = useState(users?.page);
   console.log(users);
 
   const navigate = useNavigate();
@@ -72,6 +71,7 @@ const Filtering = () => {
       "isActive",
       isActive
     );
+    dispatch(clearUser());
     dispatch(
       filterUsers([
         1,
@@ -90,7 +90,7 @@ const Filtering = () => {
   const next_page = () => {
     let number;
     if (users?.data?.length > 0) {
-      number = number_of_page + 1;
+      number = users?.page + 1;
       dispatch(clearUser());
       dispatch(
         filterUsers([
@@ -105,15 +105,14 @@ const Filtering = () => {
           isActive,
         ])
       );
-      setNumOfPAge(number);
     }
     console.log(number);
   };
 
   const previous_page = () => {
     let number;
-    if (number_of_page > 1) {
-      number = number_of_page - 1;
+    if (users?.page > 1) {
+      number = users?.page - 1;
       dispatch(clearUser());
       dispatch(
         filterUsers([
@@ -128,7 +127,6 @@ const Filtering = () => {
           isActive,
         ])
       );
-      setNumOfPAge(number);
     }
     console.log(number);
   };

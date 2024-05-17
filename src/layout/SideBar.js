@@ -79,7 +79,10 @@ function SideBar() {
         `${positionSelctor + offestSelctor * 2}rem`
       );
       document.querySelectorAll("input[type='radio']")[2].checked = true;
-    } else if (location.pathname == "/admin/filter") {
+    } else if (
+      location.pathname == "/admin/filter" ||
+      location.pathname == "/librarian/genre/all"
+    ) {
       document.documentElement.style.setProperty(
         "--selctor-top",
         `${positionSelctor + offestSelctor}rem`

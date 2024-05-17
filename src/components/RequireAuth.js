@@ -6,6 +6,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { decryptAndRetrieve, encryptAndStore } from "../rtk/slices/authSlice";
 import { useLocation } from "react-router-dom";
+import { fetchUsers } from "../rtk/slices/usersSlice";
+import { fetchGenres } from "../rtk/slices/genresSlice";
 
 function setAccessToken(access_token) {
   encryptAndStore("fathy", "access_token", access_token);
@@ -27,7 +29,7 @@ function getRoleUser() {
   return decryptAndRetrieve("fathy", "role");
 }
 
-export const RequireAuth = ({ allowedRoles, children }) => {
+export const RequireAuth = ({ allowedRoles = "" }) => {
   const refresh_token = getRefreshToken();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -37,6 +39,7 @@ export const RequireAuth = ({ allowedRoles, children }) => {
     const checkAccessToken = async () => {
       const token = getAccessToken();
       const refreshToken = getRefreshToken();
+      const role = getRoleUser();
 
       if (token && refreshToken) {
         try {
@@ -76,6 +79,16 @@ export const RequireAuth = ({ allowedRoles, children }) => {
               const data = await res.json();
               setAccessToken(data.new_access_token);
 
+              if (role == "administrator") {
+                dispatch(fetchUsers(apis.Admin.AllUsers.replace(":number", 1)));
+              } else if (role == "librarian") {
+                dispatch(fetchGenres(apis.Librarian.Genre.All));
+
+                dispatch(
+                  fetchUsers(apis.Librarian.User.AllUsers.replace(":number", 1))
+                );
+              }
+
               navigate(location?.state);
             }
           }
@@ -84,7 +97,7 @@ export const RequireAuth = ({ allowedRoles, children }) => {
         }
       } else {
         console.log("Access token not found");
-        navigate(routes.Login);
+        // navigate(routes.Login);
       }
     };
 
@@ -108,6 +121,8 @@ export const RequireAuth = ({ allowedRoles, children }) => {
     ) : (
       <Navigate to={routes.Login} />
     )
+  ) : allowedRoles == "" ? (
+    <Outlet />
   ) : (
     <Navigate to={routes.Login} />
   );

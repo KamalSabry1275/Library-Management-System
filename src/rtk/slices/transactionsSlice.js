@@ -111,6 +111,7 @@ export const transactionDelete = createAsyncThunk(
 
 const initialState = {
   data: null,
+  page: null,
   loading: false,
   error: null,
 };
@@ -130,6 +131,7 @@ export const transactionsSlice = createSlice({
       .addCase(fetchTransactions.fulfilled, (state, action) => {
         state.loading = false;
         state.data = action.payload?.data;
+        state.page = action.payload?.page;
       })
       .addCase(fetchTransactions.rejected, (state, action) => {
         state.loading = false;
@@ -142,7 +144,6 @@ export const transactionsSlice = createSlice({
       })
       .addCase(transactionConfirm.fulfilled, (state, action) => {
         state.loading = false;
-        state.data = action.payload?.data;
       })
       .addCase(transactionConfirm.rejected, (state, action) => {
         state.loading = false;
@@ -155,11 +156,6 @@ export const transactionsSlice = createSlice({
       })
       .addCase(transactionDelete.fulfilled, (state, action) => {
         state.loading = false;
-        state.data = state.data.filter((item) => {
-          if (item.transaction_id)
-            return item.transaction_id != action.payload?.id;
-          else return item.reservation_id != action.payload?.id;
-        });
       })
       .addCase(transactionDelete.rejected, (state, action) => {
         state.loading = false;

@@ -17,7 +17,6 @@ export const FilterBook = () => {
 
   const books = useSelector((state) => state.books);
   console.log(books);
-  const [number_of_page, setNumOfPAge] = useState(books?.page);
 
   const navigate = useNavigate();
 
@@ -59,27 +58,25 @@ export const FilterBook = () => {
   const next_page = () => {
     let number;
     if (books?.data?.length > 0) {
-      number = number_of_page + 1;
+      number = books?.page + 1;
       dispatch(clearBook());
       dispatch(
         filterBooks([number, id, title, author, isbn, type, libraryName])
       );
-      setNumOfPAge(number);
     }
     console.log(number);
   };
 
   const previous_page = () => {
     let number;
-    if (number_of_page > 1) {
-      number = number_of_page - 1;
+    if (books?.page > 1) {
+      number = books?.page - 1;
       dispatch(clearBook());
       dispatch(
         filterBooks([number, id, title, author, isbn, type, libraryName])
       );
-      setNumOfPAge(number);
     }
-    console.log(number);
+    console.log(books?.page);
   };
 
   useEffect(() => {

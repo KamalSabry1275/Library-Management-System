@@ -156,8 +156,8 @@ export const booksSlice = createSlice({
       })
       .addCase(filterBooks.fulfilled, (state, action) => {
         state.loading = false;
-        state.data = action.payload?.data;
         state.page = action.payload?.page;
+        state.data = action.payload?.data;
       })
       .addCase(filterBooks.rejected, (state, action) => {
         state.loading = false;
