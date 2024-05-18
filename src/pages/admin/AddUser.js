@@ -45,7 +45,7 @@ export default function AddUser({
 
   const setButton = () => {
     let loading = document.querySelector(".loading");
-    loading.innerHTML = "Submit";
+    loading.innerHTML = "add";
   };
 
   const strongPassword = (password) => {
@@ -143,7 +143,7 @@ export default function AddUser({
 
         if (data.success === true) {
           // handleProcessLogin(data);
-          navigate(routes.Home);
+          // navigate(routes.Home);
           toast.success(data.msg);
         } else {
           toast.error(data.msg);
@@ -220,7 +220,7 @@ export default function AddUser({
           onChange={handlerIsActive}
         />
 
-        <Button label="save" />
+        <Button label="add" />
       </form>
     </>
   );

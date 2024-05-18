@@ -96,8 +96,6 @@ export const editUser = createAsyncThunk(
     verified,
     isActive,
   ]) => {
-    const navigate = useNavigate();
-
     let user = {
       username: username,
       account_type: accountType,
@@ -133,7 +131,6 @@ export const editUser = createAsyncThunk(
         let data = await res.json();
 
         if (data.success === true) {
-          navigate(routes.Home);
           toast.success(data.msg);
         } else {
           toast.error(data.msg);
@@ -256,7 +253,12 @@ export const usersSlice = createSlice({
       })
       .addCase(editUser.fulfilled, (state, action) => {
         state.loading = false;
-        state.data = action.payload?.data;
+        state.data = state.data = state.data.map((item) => {
+          if (item.user_id === action.payload?.data?.user_id) {
+            return action.payload?.data;
+          }
+          return item;
+        });
       })
       .addCase(editUser.rejected, (state, action) => {
         state.loading = false;
@@ -295,7 +297,6 @@ export const usersSlice = createSlice({
       })
       .addCase(deleteUser.fulfilled, (state, action) => {
         state.loading = false;
-        state.data = action.payload?.data;
       })
       .addCase(deleteUser.rejected, (state, action) => {
         state.loading = false;

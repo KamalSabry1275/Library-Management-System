@@ -22,10 +22,25 @@ export const AddGenre = () => {
     let allGenres = [...genres, ""];
     setGenres(allGenres);
   };
-  const handlerSubmit = (e) => {
+
+  const setButton = () => {
+    let loading = document.querySelector(".loading");
+    loading.innerHTML = "add";
+  };
+
+  const handlerSubmit = async (e) => {
     e.preventDefault();
     console.log({ names: genres });
-    dispatch(addGenre(genres));
+    let loading = document.querySelector(".loading");
+    let loading_bar = document.createElement("span");
+    loading_bar.className = "spinner-border";
+    loading_bar.style.height = "1.2rem";
+    loading_bar.style.width = "1.2rem";
+    loading_bar.style.borderWidth = "0.2rem";
+    loading.innerHTML = "";
+    loading.appendChild(loading_bar);
+    await dispatch(addGenre(genres));
+    setButton();
   };
 
   useEffect(() => {

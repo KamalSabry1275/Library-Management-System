@@ -33,7 +33,7 @@ export const routes = {
   },
 };
 
-const port = "6786";
+const port = "6572";
 const DOMIN = `5.181.177.3:${port}`;
 
 export const apis = {

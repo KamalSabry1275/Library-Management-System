@@ -1,4 +1,4 @@
-const InformationText = ({ label, value }) => {
+const InformationText = ({ label = "", value = "" }) => {
   return (
     <tr>
       <td>{label}</td>

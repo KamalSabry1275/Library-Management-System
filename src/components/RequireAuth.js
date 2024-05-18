@@ -118,6 +118,8 @@ export const RequireAuth = ({ allowedRoles = "" }) => {
   return token ? (
     role == allowedRoles ? (
       <Outlet />
+    ) : allowedRoles == "" ? (
+      <Outlet />
     ) : (
       <Navigate to={routes.Login} />
     )

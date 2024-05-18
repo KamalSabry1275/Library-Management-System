@@ -2,7 +2,7 @@ export default function InputRadio({
   showLabel = true,
   name,
   elements,
-  value,
+  value = "",
   onChange,
 }) {
   return (

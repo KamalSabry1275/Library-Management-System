@@ -41,7 +41,12 @@ export const FilterBook = () => {
     setLibraryName(value);
   };
 
-  const handlerSubmit = (e) => {
+  const setButton = () => {
+    let loading = document.querySelector(".loading");
+    loading.innerHTML = "filter";
+  };
+
+  const handlerSubmit = async (e) => {
     e.preventDefault();
     console.log({
       id: id,
@@ -51,8 +56,19 @@ export const FilterBook = () => {
       type: type,
       libraryName: libraryName,
     });
+    let loading = document.querySelector(".loading");
+    let loading_bar = document.createElement("span");
+    loading_bar.className = "spinner-border";
+    loading_bar.style.height = "1.2rem";
+    loading_bar.style.width = "1.2rem";
+    loading_bar.style.borderWidth = "0.2rem";
+    loading.innerHTML = "";
+    loading.appendChild(loading_bar);
     dispatch(clearBook());
-    dispatch(filterBooks([1, id, title, author, isbn, type, libraryName]));
+    await dispatch(
+      filterBooks([1, id, title, author, isbn, type, libraryName])
+    );
+    setButton();
   };
 
   const next_page = () => {

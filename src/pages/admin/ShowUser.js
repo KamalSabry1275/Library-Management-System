@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Button from "../../components/Button";
 import InformationText from "../../components/InformationText";
 import { useDispatch, useSelector } from "react-redux";
-import { routes } from "../../components/URLs";
-import { deleteUser } from "../../rtk/slices/usersSlice";
+import { apis, routes } from "../../components/URLs";
+import { clearUser, deleteUser, fetchUsers } from "../../rtk/slices/usersSlice";
 
 const ShowUser = () => {
   let userId = useParams().id;
@@ -14,7 +14,7 @@ const ShowUser = () => {
   console.log(userInfo);
 
   const dispatch = useDispatch();
-
+  const location = useLocation();
   const navigate = useNavigate();
 
   function titleForm(title) {
@@ -31,7 +31,7 @@ const ShowUser = () => {
     <>
       <form onSubmit={handlerSubmit}>
         <table className="table table-bordered">
-          <tbody class="table-group-divider">
+          <tbody className="table-group-divider">
             <InformationText label="id" value={userInfo.user_id} />
             <InformationText label="user name" value={userInfo.username} />
             <InformationText label="email" value={userInfo.email} />
@@ -48,31 +48,31 @@ const ShowUser = () => {
             <InformationText label="is actvie" value={userInfo.is_active} />
           </tbody>
         </table>
-        <tr>
-          <td>
-            <button
-              style={{ margin: "0.2rem 0.5rem" }}
-              className="btn btn-success"
-              onClick={() => {
-                navigate(
-                  routes.Admin.EditUser.replace(":id", userInfo.user_id)
-                );
-              }}
-            >
-              edit
-            </button>
-            <button
-              style={{ margin: "0.2rem 0.5rem" }}
-              className="btn btn-danger"
-              onClick={() => {
-                // navigate(routes.Admin.AllUsers);
-                dispatch(deleteUser(userInfo.user_id));
-              }}
-            >
-              delete
-            </button>
-          </td>
-        </tr>
+
+        <div>
+          <button
+            style={{ margin: "0.2rem 0.5rem" }}
+            className="btn btn-success"
+            onClick={() => {
+              navigate(routes.Admin.EditUser.replace(":id", userInfo.user_id));
+            }}
+          >
+            edit
+          </button>
+          <button
+            style={{ margin: "0.2rem 0.5rem" }}
+            className="btn btn-danger"
+            type="button"
+            onClick={async () => {
+              navigate(location?.state);
+              dispatch(clearUser());
+              await dispatch(deleteUser(userInfo.user_id));
+              dispatch(fetchUsers(apis.Admin.AllUsers.replace(":number", 1)));
+            }}
+          >
+            delete
+          </button>
+        </div>
       </form>
     </>
   );

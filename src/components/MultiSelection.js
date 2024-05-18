@@ -1,7 +1,12 @@
 import { useEffect, useState } from "react";
 import { ContextMenu } from "./ContextMenu";
 
-export const MultiSelection = ({ onClick, name, value, elements = [] }) => {
+export const MultiSelection = ({
+  onClick,
+  name,
+  value = "",
+  elements = [],
+}) => {
   return (
     <>
       <div className="field_form" style={{ height: "fit-content" }}>

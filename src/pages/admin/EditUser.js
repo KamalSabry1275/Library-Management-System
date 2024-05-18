@@ -9,6 +9,7 @@ import InputRadio from "../../components/InputRadio";
 import InputCheckBox from "../../components/InputCheckBox";
 import { decryptAndRetrieve } from "../../rtk/slices/authSlice";
 import { editUser } from "../../rtk/slices/usersSlice";
+import { titleForm } from "../../components/TitleForm";
 
 function getAccessToken() {
   return decryptAndRetrieve("fathy", "access_token");
@@ -16,19 +17,18 @@ function getAccessToken() {
 
 export default function EditUser() {
   let userId = useParams().id;
-  let [userInfo] = useSelector((state) =>
-    state.users?.data?.filter((user) => user.user_id == userId)
-  );
+  let users = useSelector((state) => state.users?.data);
+  let [userInfo] = users?.filter((user) => user?.user_id == userId);
+
   console.log(userInfo);
 
-  let default_username = userInfo.username,
-    default_accountType = userInfo.account_type,
-    default_email = userInfo.email,
-    default_password = userInfo.password,
-    default_role = userInfo.role,
-    default_libraryName = userInfo.library_name,
-    default_verified = userInfo.verified,
-    default_isActive = userInfo.is_active;
+  let default_username = userInfo?.username ?? "",
+    default_accountType = userInfo?.account_type ?? "",
+    default_email = userInfo?.email ?? "",
+    default_role = userInfo?.role ?? "",
+    default_libraryName = userInfo?.library_name ?? "",
+    default_verified = userInfo?.verified ?? false,
+    default_isActive = userInfo?.is_active ?? false;
 
   const [username, setUserName] = useState(default_username);
   const [accountType, setAccountType] = useState(default_accountType);
@@ -48,7 +48,7 @@ export default function EditUser() {
 
   const setButton = () => {
     let loading = document.querySelector(".loading");
-    loading.innerHTML = "Submit";
+    loading.innerHTML = "edit";
   };
 
   const handlerUserName = (e) => {
@@ -73,10 +73,6 @@ export default function EditUser() {
     setIsActive(e.target.checked);
   };
 
-  function titleForm(title) {
-    document.documentElement.style.setProperty("--logo-form", `'${title}'`);
-  }
-
   const handlerSubmit = (e) => {
     e.preventDefault();
     dataError = [];
@@ -100,7 +96,7 @@ export default function EditUser() {
   };
 
   async function hundleEditUser() {
-    dispatch(
+    await dispatch(
       editUser([
         userId,
         username,
@@ -149,13 +145,6 @@ export default function EditUser() {
           value={email}
           onChange={handlerEmail}
         />
-        {/* <Input
-          type="password"
-          name="password"
-          value={password}
-          progress={progressValue}
-          onChange={handlerPassword}
-        /> */}
         <InputRadio
           name="rule"
           elements={["patron", "librarian", "administrator"]}
@@ -179,7 +168,7 @@ export default function EditUser() {
           onChange={handlerIsActive}
         />
 
-        <Button label="save" />
+        <Button label="edit" />
       </form>
     </>
   );

@@ -1,4 +1,4 @@
-export default function InputCheckBox({ name, value, onChange }) {
+export default function InputCheckBox({ name, value = false, onChange }) {
   return (
     <div className="field_input_checkbox">
       <div>

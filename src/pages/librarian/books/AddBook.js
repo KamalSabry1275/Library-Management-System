@@ -7,6 +7,7 @@ import { ContextMenu, menuShow } from "../../../components/ContextMenu";
 import { useDispatch, useSelector } from "react-redux";
 import { addBook } from "../../../rtk/slices/booksSlice";
 import Button from "../../../components/Button";
+import { toast } from "react-toastify";
 
 export const AddBook = () => {
   const [title, setTitle] = useState("");
@@ -17,6 +18,9 @@ export const AddBook = () => {
   const [availableCopies, setAvailableCopies] = useState("");
   const [genres, setGenres] = useState([]);
   const getGenres = useSelector((state) => state.genres?.data);
+
+  let dataError = [];
+  const [invalid, setInvalid] = useState([]);
 
   const dispatch = useDispatch();
 
@@ -64,6 +68,11 @@ export const AddBook = () => {
     setAvailableCopies(e.target.value);
   };
 
+  const setButton = () => {
+    let loading = document.querySelector(".loading");
+    loading.innerHTML = "add";
+  };
+
   const handlerSubmit = (e) => {
     e.preventDefault();
     console.log({
@@ -76,10 +85,40 @@ export const AddBook = () => {
       genres,
     });
 
-    dispatch(
+    if (title == "") dataError.push("title is empty");
+    if (auther == "") dataError.push("auther is empty");
+    if (isbn == "") dataError.push("isbn is empty");
+    if (type == "") dataError.push("type is empty");
+    if (totalCopies == "") dataError.push("totalCopies is empty");
+    if (availableCopies == "") dataError.push("availableCopies is empty");
+    if (genres == "") dataError.push("genres is empty");
+
+    if (dataError == "") {
+      let loading = document.querySelector(".loading");
+      let loading_bar = document.createElement("span");
+      loading_bar.className = "spinner-border";
+      loading_bar.style.height = "1.2rem";
+      loading_bar.style.width = "1.2rem";
+      loading_bar.style.borderWidth = "0.2rem";
+      loading.innerHTML = "";
+      loading.appendChild(loading_bar);
+      handleAddBook();
+    } else setInvalid(dataError);
+  };
+
+  const handleAddBook = async () => {
+    await dispatch(
       addBook([title, auther, isbn, type, totalCopies, availableCopies, genres])
     );
+
+    setButton();
   };
+
+  useEffect(() => {
+    invalid.map((inputError) => {
+      toast.error(inputError);
+    });
+  }, [invalid]);
 
   return (
     <form onSubmit={handlerSubmit}>

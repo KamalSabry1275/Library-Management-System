@@ -3,7 +3,7 @@ import { apis, routes } from "../../components/URLs";
 import { decryptAndRetrieve } from "../../rtk/slices/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import Button from "../../components/Button";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { clearUser, deleteUser, fetchUsers } from "../../rtk/slices/usersSlice";
 import { clear } from "@testing-library/user-event/dist/clear";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -12,16 +12,20 @@ import { faArrowsRotate, faUpload } from "@fortawesome/free-solid-svg-icons";
 export const AllUsers = ({ pagination = true }) => {
   const users = useSelector((state) => state.users);
   const [number_of_page, setNumOfPAge] = useState(users?.page);
+  const [reload, setReload] = useState(0);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const next_page = () => {
     let num;
     if (users?.data?.length > 0) {
-      num = number_of_page + 1;
+      num = number_of_page + 1 - reload;
       dispatch(clearUser());
       dispatch(fetchUsers(apis.Admin.AllUsers.replace(":number", num)));
       setNumOfPAge(num);
+      setReload(0);
     }
     console.log(num);
   };
@@ -33,6 +37,7 @@ export const AllUsers = ({ pagination = true }) => {
       dispatch(clearUser());
       dispatch(fetchUsers(apis.Admin.AllUsers.replace(":number", num)));
       setNumOfPAge(num);
+      setReload(0);
     }
     console.log(num);
   };
@@ -73,7 +78,7 @@ export const AllUsers = ({ pagination = true }) => {
         <tbody className="table-group-divider">
           {users?.data?.map((user, index) => {
             return (
-              <tr>
+              <tr key={`${user}-${index}`}>
                 <th scope="row">{index + 1 + (users?.page - 1) * 10}</th>
 
                 <td style={{ width: "60%" }}>{user.username}</td>
@@ -83,7 +88,8 @@ export const AllUsers = ({ pagination = true }) => {
                     className="btn btn-info"
                     onClick={() => {
                       navigate(
-                        routes.Admin.ShowUser.replace(":id", user.user_id)
+                        routes.Admin.ShowUser.replace(":id", user.user_id),
+                        { state: location?.pathname }
                       );
                     }}
                   >
@@ -103,8 +109,11 @@ export const AllUsers = ({ pagination = true }) => {
                   <button
                     style={{ margin: "0.2rem 0.5rem" }}
                     className="btn btn-danger"
-                    onClick={() => {
+                    onClick={(e) => {
+                      setReload(1);
                       dispatch(deleteUser(user.user_id));
+                      e.target.parentNode.innerHTML =
+                        "<div style='color:#ff0000'>Delete</div>";
                     }}
                   >
                     delete

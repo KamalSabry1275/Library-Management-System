@@ -15,6 +15,7 @@ export const BorrowBooks = () => {
   const transactions = useSelector((state) => state.transactions);
   console.log(transactions);
 
+  const [reload, setReload] = useState(0);
   const [state, setState] = useState("");
 
   const dispatch = useDispatch();
@@ -50,12 +51,14 @@ export const BorrowBooks = () => {
         apis.Librarian.Book.Transaction.Borrow.Delete.replace(":id", id)
       )
     );
+
+    setReload(1);
   };
 
   const next_page = () => {
     let number;
     if (transactions?.data?.length > 0) {
-      number = transactions?.page + 1;
+      number = transactions?.page + 1 - reload;
       dispatch(clearTransactions());
       dispatch(
         fetchTransactions(
@@ -65,6 +68,7 @@ export const BorrowBooks = () => {
           ).replace(":state", state)
         )
       );
+      setReload(0);
     }
     console.log(number);
   };
@@ -82,6 +86,7 @@ export const BorrowBooks = () => {
           ).replace(":state", state)
         )
       );
+      setReload(0);
     }
     console.log(number);
   };

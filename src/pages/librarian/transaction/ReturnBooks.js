@@ -13,6 +13,7 @@ export const ReturnBooks = () => {
   const transactions = useSelector((state) => state.transactions);
   console.log(transactions);
 
+  const [reload, setReload] = useState(0);
   const [state, setState] = useState("");
 
   const dispatch = useDispatch();
@@ -48,12 +49,14 @@ export const ReturnBooks = () => {
         apis.Librarian.Book.Transaction.Return.Delete.replace(":id", id)
       )
     );
+
+    setReload(1);
   };
 
   const next_page = () => {
     let number;
     if (transactions?.data?.length > 0) {
-      number = transactions?.page + 1;
+      number = transactions?.page + 1 - reload;
       dispatch(clearTransactions());
       dispatch(
         fetchTransactions(
@@ -63,6 +66,7 @@ export const ReturnBooks = () => {
           ).replace(":state", state)
         )
       );
+      setReload(0);
     }
     console.log(number);
   };
@@ -80,6 +84,7 @@ export const ReturnBooks = () => {
           ).replace(":state", state)
         )
       );
+      setReload(0);
     }
     console.log(number);
   };
